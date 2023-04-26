@@ -13,7 +13,7 @@ response = requests.post(url, json=data)
 print(response.json())
 
 #Testing getting data
-response = requests.get('http://127.0.0.1:5000/get_data/S1234')
+response = requests.get(url +'/S1234')
 print(response.json())
 
 
@@ -22,13 +22,13 @@ data = {
     "JP_price": 1200,
     "US_name": "Pokemon Trading Card"
 }
-response = requests.put("http://127.0.0.1:5000/update_data/S1234", json=data)
+response = requests.put(url + "/update_data/S1234", json=data)
 
 data = {
     "JP_name": "Miao Wa",
     "US_price": -10000
 }
-response = requests.put("http://127.0.0.1:5000/update_data/S1234", json=data)
+response = requests.put(url + "/update_data/S1234", json=data)
 
 data = {
     "JP_name": "JJ",
@@ -36,4 +36,4 @@ data = {
     "US_name": "USA!!",
     "JP_price": -2
 }
-response = requests.put("http://127.0.0.1:5000/update_data/S1234", json=data)
+response = requests.put(url + "/update_data/S1234", json=data)

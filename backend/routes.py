@@ -26,7 +26,7 @@ def get_data(unique_id):
 
     if result:
         # Return data if found
-        return jsonify({"message": "Data retrieved successfully!", "output:": result})
+        return jsonify({"message": "Data retrieved successfully!", "output": result})
     else:
         # Return error message if not found
         return jsonify({"error": f"No data found for unique_id {unique_id}."})
