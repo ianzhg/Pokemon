@@ -1,0 +1,6 @@
+Flask
+Flask-Cors
+selenium
+webdriver-manager
+zipcodes
+beautifulsoup4
