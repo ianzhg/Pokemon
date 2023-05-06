@@ -178,6 +178,3 @@ while True:
 
     time.sleep(time_interval)
 
-
-
-
