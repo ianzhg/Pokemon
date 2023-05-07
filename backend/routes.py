@@ -139,6 +139,7 @@ def most_volatile_cards_endpoint():
                 'price': price,
                 'shift': shift
             })
-
+    response = jsonify(card_data)
+    response.headers.add('Access-Control-Allow-Origin', '*')
     # Return the card data as JSON
-    return jsonify(card_data)
+    return response
