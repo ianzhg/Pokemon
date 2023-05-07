@@ -33,3 +33,4 @@ soupsieve==2.4.1
 urllib3==1.26.12
 Werkzeug==2.2.2
 yarg==0.1.9
+selenium

@@ -1,14 +1,26 @@
-from backend import app
-from flask import request, jsonify
-from . import collection
+from flask import request, jsonify, Blueprint
+from US_pokemon import update_us_price, update_some_us_price
+from bs4 import BeautifulSoup
+import requests
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
+import time
+from pymongo import MongoClient
+import re
+from db import collection
 
+api = Blueprint('api', __name__, url_prefix='/api')
 
-@app.route("/")
+@api.route("/")
 def index():
     return "Hello world"
 
 # Define route to store data in MongoDB
-@app.route("/store_data", methods=["POST"])
+@api.route("/store_data", methods=["POST"])
 def store_data():
     data = request.get_json()
 
@@ -19,7 +31,7 @@ def store_data():
     return jsonify({"message": "Data stored successfully!", "id": data["unique_id"]})
 
 # Define route to get data from MongoDB by unique_id
-@app.route("/get_data/<unique_id>", methods=["GET"])
+@api.route("/get_data/<unique_id>", methods=["GET"])
 def get_data(unique_id):
     # Find data in MongoDB by unique_id
     result = collection.find_one({"_id": unique_id})
@@ -32,7 +44,7 @@ def get_data(unique_id):
         return jsonify({"error": f"No data found for unique_id {unique_id}."})
 
 # Define route to update data in MongoDB by unique_id. This automatically check how many fields to update and update in database
-@app.route("/update_data/<unique_id>", methods=["PUT"])
+@api.route("/update_data/<unique_id>", methods=["PUT"])
 def update_data(unique_id):
     data = request.get_json()
 
@@ -60,3 +72,73 @@ def update_data(unique_id):
     else:
         # Return error message if no fields were present in the input
         return jsonify({"error": "No fields present in input."})
+
+
+@api.route("/update_us_price/all", methods=["PUT"])
+def update_us_prices_endpoint():
+    try:
+        update_us_price()
+        return jsonify({"message": "Prices updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@api.route("/update_us_price", methods=["PUT"])
+def update_some_us_prices_endpoint():
+    try:
+        # Get the JSON object from the request
+        data = request.get_json()
+
+        # Get the list of cards from the JSON object
+        cards_to_update = data.get("cards")
+
+        if not cards_to_update:
+            return jsonify({"error": "No cards provided to update"}), 400
+
+        update_some_us_price(cards_to_update)
+        return jsonify({"message": "Prices updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+
+@api.route("/most_volatile_cards", methods=["GET"])
+def most_volatile_cards_endpoint():
+    ## Get the most hyped data
+    url = 'https://pokemonprices.com/'
+
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Find all 'tr' elements
+    rows = soup.find_all('tr')
+
+    # Define a list to store the card data
+    card_data = []
+
+    # Iterate over each row
+    for row in rows:
+        # Get all 'td' elements in the row
+        tds = row.find_all('td')
+        
+        # Ensure that there are four 'td' elements in the row
+        if len(tds) == 4:
+            # Extract the necessary information from each 'td' element
+            name = tds[1].find('b').text
+            collector_info = tds[1].find_all('br')[0].next_sibling.strip('\n')
+            set = tds[1].find_all('a')[1].text.strip('\n')
+            rarity = tds[1].find_all('br')[2].next_sibling.strip('\n').strip('()')
+            price = tds[2].find('b').text
+            shift = tds[3].find('b').text.strip('\n')
+
+            # Add the card's information to the list
+            card_data.append({
+                'name': name,
+                'collector_info': collector_info,
+                'set': set,
+                'rarity': rarity,
+                'price': price,
+                'shift': shift
+            })
+
+    # Return the card data as JSON
+    return jsonify(card_data)
