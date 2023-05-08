@@ -20,15 +20,42 @@ const ShippingPage = () => {
         
           const data = await response.json();
           console.log(data)
-          setResult(data.result);
+          setResult(data);
       } catch (error){
         console.error("Error fetching data:",  error);
       }finally{
         setLoading(false);
       }
+    };
 
+    const renderResult = () => {
+      if (!result) return null;
   
-      
+      return (
+        <div>
+          <h3>Shipping Info</h3>
+          <pre>{result.shipping_info}</pre>
+          <h3>Fastest Way</h3>
+          <p>{result.fastest_way}</p>
+          <p>{result.fastest_way_cost_and_time}</p>
+          <p>
+            <a href={result.fatstest_link} target="_blank" rel="noopener noreferrer">
+              {result.fatstest_link}
+            </a>
+          </p>
+          <h3>Other Shipping Methods</h3>
+          {/* <ul>
+            {Object.entries(result)
+              .filter(([key]) => key !== 'shipping_info' && key !== 'fastest_way' && key !== 'fastest_way_cost_and_time' && key !== 'fatstest_link')
+              .map(([key, value]) => (
+                <li key={key}>
+                  <strong>{key}:</strong>
+                  <pre>{value}</pre>
+                </li>
+              ))}
+          </ul> */}
+        </div>
+      );
     };
 
     return (
@@ -50,7 +77,7 @@ const ShippingPage = () => {
             <button type="submit">Submit</button>
           </form>
           {loading && <p>Loading...</p>}
-          {result && <p>Result: {result}</p>}
+          {renderResult()}
         </div>
       );
     };

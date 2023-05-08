@@ -114,13 +114,14 @@ def get_us_state(postal_code):
 
 def find_element_text(driver, xpath):
     try:
-        element = driver.find_element_by_xpath(xpath)
+        element = driver.find_element("xpath", xpath)
         return element.text.strip()
     except Exception as err:
         return ""
 
     
 def japan_post(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
+    chrome_driver_path = ChromeDriverManager().install()
     chrome_options = Options()
     #chrome_options.add_argument("--headless")
     driver = webdriver.Chrome(executable_path = chrome_driver_path, options = chrome_options)
@@ -129,68 +130,68 @@ def japan_post(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
     url = "https://www.post.japanpost.jp/cgi-charge/index.php?lang=_en"
     driver.get(url)
 
-    type_element = driver.find_element_by_xpath("/html/body/div[1]/div[3]/div/div[1]/div/div[2]/form/dl[1]/dd/ul/li[1]/label")
+    type_element = driver.find_element("xpath", "/html/body/div[1]/div[3]/div/div[1]/div/div[2]/form/dl[1]/dd/ul/li[1]/label")
     type_element.click()
 
-    weight_element = driver.find_element_by_xpath("/html/body/div[1]/div[3]/div/div[1]/div/div[2]/form/dl[2]/dd/div/input")
+    weight_element = driver.find_element("xpath", "/html/body/div[1]/div[3]/div/div[1]/div/div[2]/form/dl[2]/dd/div/input")
     #each card weight 1.7 grams; with the case about 5 grams
     weight = int(cards) * 5
     weight_element.send_keys(str(weight))
 
-    weight_button = driver.find_element_by_xpath("/html/body/div[1]/div[3]/div/div[1]/div/div[2]/form/dl[2]/dd/ul[1]/li[1]/label")
+    weight_button = driver.find_element("xpath", "/html/body/div[1]/div[3]/div/div[1]/div/div[2]/form/dl[2]/dd/ul[1]/li[1]/label")
     weight_button.click()
 
-    shipping_from_element = driver.find_element_by_xpath("/html/body/div[1]/div[3]/div/div[1]/div/div[2]/form/dl[3]/dd/div/select")
+    shipping_from_element = driver.find_element("xpath", "/html/body/div[1]/div[3]/div/div[1]/div/div[2]/form/dl[3]/dd/div/select")
     shipping_select = Select(shipping_from_element)
     jp_prefecture = find_jp_state(jp_zipcode)
     shipping_select.select_by_visible_text(jp_prefecture)
 
-    destination_country_element = driver.find_element_by_xpath("/html/body/div/div[3]/div/div[1]/div/div[2]/form/dl[4]/dd/div[1]/select")
+    destination_country_element = driver.find_element("xpath", "/html/body/div/div[3]/div/div[1]/div/div[2]/form/dl[4]/dd/div[1]/select")
     dest_country_select = Select(destination_country_element)
     dest_country_select.select_by_visible_text("United States")
     # wait the state selection come out
     sleep(0.5)
-    destination_state_element = driver.find_element_by_xpath("/html/body/div/div[3]/div/div[1]/div/div[2]/form/dl[4]/dd/div[2]/select")
+    destination_state_element = driver.find_element("xpath", "/html/body/div/div[3]/div/div[1]/div/div[2]/form/dl[4]/dd/div[2]/select")
     dest_state_select = Select(destination_state_element)
     us_state = get_us_state(us_zipcode)
     dest_state_select.select_by_visible_text(us_state)
 
-    weight_button = driver.find_element_by_xpath("/html/body/div[1]/div[3]/div/div[1]/div/div[2]/form/div/input")
+    weight_button = driver.find_element("xpath", "/html/body/div[1]/div[3]/div/div[1]/div/div[2]/form/div/input")
     weight_button.click()
 
     #start scraping all the shipping info
     info = {}
-    shipping_info = driver.find_element_by_xpath("/html/body/div[1]/div[3]/div/div[1]/div/div[1]/ul")
-    shipping_info = shipping_info.text.strip().split("\n")
+    shipping_info = driver.find_element("xpath", "/html/body/div[1]/div[3]/div/div[1]/div/div[1]/ul").text.strip()
+    # shipping_info = shipping_info.text.strip().split("\n")
 
-    fastest_way = driver.find_element_by_xpath("/html/body/div[1]/div[3]/div/div[1]/div/div[2]/div[2]/div[1]/div[1]/a")
-    fastest_info = driver.find_element_by_xpath("/html/body/div[1]/div[3]/div/div[1]/div/div[2]/div[2]/div[1]/div[2]/span")
-    fastest_link = driver.find_element_by_xpath("/html/body/div[1]/div[3]/div/div[1]/div/div[2]/div[2]/div[1]/div[1]/a").get_attribute("href")
+    fastest_way = driver.find_element("xpath", "/html/body/div[1]/div[3]/div/div[1]/div/div[2]/div[2]/div[1]/div[1]/a")
+    fastest_info = driver.find_element("xpath", "/html/body/div[1]/div[3]/div/div[1]/div/div[2]/div[2]/div[1]/div[2]/span")
+    fastest_link = driver.find_element("xpath", "/html/body/div[1]/div[3]/div/div[1]/div/div[2]/div[2]/div[1]/div[1]/a").get_attribute("href")
 
-    if len(shipping_info) >= 3:
-        info["Region of origin"] = shipping_info[0].split(" : ")[1]
-        info["Estimate weight"] = shipping_info[2].split(" : ")[1]
-        info["fastest_way"] = fastest_way.text.strip()
-        info["fastest_way_cost_and_time"] = fastest_info.text.strip()
-        info["fatstest_link"] = fastest_link
-
-    other_method = {}
+    # if len(shipping_info) >= 3:
+        # info["Region of origin"] = shipping_info[0].split(" : ")[1]
+        # info["Estimate weight"] = shipping_info[2].split(" : ")[1]
+    info["shipping_info"] = shipping_info
+    info["fastest_way"] = fastest_way.text.strip()
+    info["fastest_way_cost_and_time"] = fastest_info.text.strip()
+    info["fatstest_link"] = fastest_link
+    
     method1 = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[3]/div[1]/span")
     method1_cost = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[3]/div[2]/div[1]/div[2]/table/tbody/tr/td[1]/span")
     method1_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[3]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul")
-    other_method[method1] = method1_cost + method1_time 
 
     method2 = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[4]/div[1]/span")
     method2_cost = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[4]/div[2]/div[1]/div[2]/table/tbody/tr/td[1]/span")
     method2_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[4]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul")
-    other_method[method2] = method2_cost + method2_time 
 
     method3 = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[1]/span")
     method3_cost = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[2]/div[1]/div[2]/table/tbody/tr/td[1]/span")
     method3_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul")
-    other_method[method3] = method3_cost + method3_time 
 
-    info['other_choice'] = other_method
+    info[method1] = method1_cost + method1_time 
+    info[method2] = method2_cost + method2_time
+    info[method3] = method3_cost + method3_time
+    print(info)
     driver.quit()
     return info
 
