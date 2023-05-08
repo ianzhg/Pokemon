@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import MainPage from './components/MainPage';
 import SearchPage from './components/SearchPage';
 import AllProductsPage from './components/AllProductsPage';
+import ShippingPage from './components/ShippingPage';
 
 function App() {
   return (
@@ -19,6 +20,12 @@ function App() {
             <li>
               <Link to="/all-products">All Products</Link>
             </li>
+            <li>
+              <Link to="/shipping">Shipping</Link>
+            </li>
+            <li>
+              <Link to="/currency">Currency Exchange</Link>
+            </li>
           </ul>
         </nav>
 
@@ -26,6 +33,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/all-products" element={<AllProductsPage />} />
+          <Route path="/shipping" element={<ShippingPage />} />
         </Routes>
       </div>
     </Router>

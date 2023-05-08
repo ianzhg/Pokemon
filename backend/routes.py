@@ -1,5 +1,6 @@
-from flask import request, jsonify, Blueprint
+from flask import request, jsonify, Blueprint, Flask
 from US_pokemon import update_us_price, update_some_us_price
+from flask_cors import CORS
 from bs4 import BeautifulSoup
 import requests
 from selenium import webdriver
@@ -12,6 +13,11 @@ import time
 from pymongo import MongoClient
 import re
 from db import collection
+from shipping import function_runner
+from shipping import japan_post
+
+# app = Flask(__name__)
+# CORS(app, resources={r"*": {"origins": "*"}})
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -142,3 +148,16 @@ def most_volatile_cards_endpoint():
 
     # Return the card data as JSON
     return jsonify(card_data)
+
+@api.route('/shipping', methods=['POST'])
+def get_shipping_price():
+    data = request.json
+    cards = data['cards']
+    jp_zipcode = data['japanZip']
+    us_zipcode = data['usZip']
+    print(data)
+    result = function_runner(japan_post, cards, jp_zipcode, us_zipcode)
+    response = jsonify(result)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
