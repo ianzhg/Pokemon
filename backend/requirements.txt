@@ -36,3 +36,4 @@ yarg==0.1.9
 selenium
 zipcodes
 flask_cors
+python-dotenv

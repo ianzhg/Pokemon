@@ -15,6 +15,7 @@ import re
 from db import collection
 from shipping import function_runner
 from shipping import japan_post
+from exchangerate import get_exchange_rate
 
 # app = Flask(__name__)
 # CORS(app, resources={r"*": {"origins": "*"}})
@@ -161,3 +162,21 @@ def get_shipping_price():
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Credentials', 'true')
     return response
+
+@api.route('/get_exchange_rate', methods=['POST'])
+def get_exchange_rate_route():
+    data = request.json
+    base_currency = data['baseCurrency']
+    target_currency = data['targetCurrency']
+
+    rate = get_exchange_rate(base_currency, target_currency)
+
+    if rate:
+        response = jsonify(rate=rate)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+    else:
+        response = jsonify(error="Error fetching exchange rate")
+        response.status_code = 500
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response

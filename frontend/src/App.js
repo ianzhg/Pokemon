@@ -4,6 +4,7 @@ import MainPage from './components/MainPage';
 import SearchPage from './components/SearchPage';
 import AllProductsPage from './components/AllProductsPage';
 import ShippingPage from './components/ShippingPage';
+import ExchangeRatePage from './components/ExchangeRate';
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
               <Link to="/shipping">Shipping</Link>
             </li>
             <li>
-              <Link to="/currency">Currency Exchange</Link>
+              <Link to="/get_exchange_rate">Currency Exchange</Link>
             </li>
           </ul>
         </nav>
@@ -34,6 +35,7 @@ function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/all-products" element={<AllProductsPage />} />
           <Route path="/shipping" element={<ShippingPage />} />
+          <Route path="/get_exchange_rate" element={<ExchangeRatePage />} />
         </Routes>
       </div>
     </Router>
