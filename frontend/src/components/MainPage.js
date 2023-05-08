@@ -7,7 +7,7 @@ function MainPage() {
 
   useEffect(() => {
     axios
-      .get('your_api_endpoint_here')
+      .get('http://localhost:5000/api/most_volatile_cards')
       .then((response) => {
         setVolatileCards(response.data);
       })
