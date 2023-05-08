@@ -1,6 +1,6 @@
 from flask import request, jsonify, Blueprint, Flask
 from US_pokemon import update_us_price, update_some_us_price
-from flask_cors import CORS
+
 from bs4 import BeautifulSoup
 import requests
 from selenium import webdriver
@@ -159,8 +159,8 @@ def get_shipping_price():
     print(data)
     result = function_runner(japan_post, cards, jp_zipcode, us_zipcode)
     response = jsonify(result)
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    # response.headers.add('Access-Control-Allow-Origin', '*')
+    # response.headers.add('Access-Control-Allow-Credentials', 'true')
     return response
 
 @api.route('/get_exchange_rate', methods=['POST'])
