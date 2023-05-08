@@ -168,9 +168,6 @@ def japan_post(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
     fastest_info = driver.find_element("xpath", "/html/body/div[1]/div[3]/div/div[1]/div/div[2]/div[2]/div[1]/div[2]/span")
     fastest_link = driver.find_element("xpath", "/html/body/div[1]/div[3]/div/div[1]/div/div[2]/div[2]/div[1]/div[1]/a").get_attribute("href")
 
-    # if len(shipping_info) >= 3:
-        # info["Region of origin"] = shipping_info[0].split(" : ")[1]
-        # info["Estimate weight"] = shipping_info[2].split(" : ")[1]
     info["shipping_info"] = shipping_info
     info["fastest_way"] = fastest_way.text.strip()
     info["fastest_way_cost_and_time"] = fastest_info.text.strip()
@@ -188,14 +185,13 @@ def japan_post(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
     method3_cost = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[2]/div[1]/div[2]/table/tbody/tr/td[1]/span")
     method3_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul")
 
-    info[method1] = method1_cost + method1_time 
-    info[method2] = method2_cost + method2_time
-    info[method3] = method3_cost + method3_time
-    print(info)
+    info[method1] = (method1_cost + method1_time).replace("\n", "").replace("days", "days  ").replace("weeks", "weeks  ")
+    info[method2] = (method2_cost + method2_time).replace("\n", "").replace("days", "days  ").replace("weeks", "weeks  ")
+    info[method3] = (method3_cost + method3_time).replace("\n", "").replace("days", "days  ").replace("weeks", "weeks  ")
     driver.quit()
     return info
 
-def DHL(cards, jp_postal = "120-0011", us_postal = "90001"):
+def DHL(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
     def accept_cookies(driver, accept_button_locator):
         wait = WebDriverWait(driver, 2)
         accept_button = wait.until(EC.element_to_be_clickable(accept_button_locator))
@@ -203,8 +199,7 @@ def DHL(cards, jp_postal = "120-0011", us_postal = "90001"):
 
     def wait_to_pop(driver, location):
         input_locator = (By.XPATH, location)
-        accept_button = WebDriverWait(driver, 1).until(EC.visibility_of_element_located(input_locator))
-        accept_button.click()
+        accept_button = WebDriverWait(driver, 2).until(EC.visibility_of_element_located(input_locator))
 
     def click_on_empty_space(driver, x, y):
         action_chains = ActionChains(driver)
@@ -213,63 +208,41 @@ def DHL(cards, jp_postal = "120-0011", us_postal = "90001"):
 
     chrome_options = Options()
     #chrome_options.add_argument("--headless")
-#     chrome_options.add_argument("--disable-gpu")
-#     chrome_options.add_argument("--window-size=1280x800")
-#     chrome_options.add_experimental_option("prefs", {
-#         "profile.managed_default_content_settings.images": 2,  # Block images
-#         "profile.managed_default_content_settings.stylesheets": 2,  # Block CSS
-#         "profile.managed_default_content_settings.cookies": 2,  # Block cookies
-#     })
     driver = webdriver.Chrome(executable_path = chrome_driver_path, options=chrome_options)
 
-    url = "https://www.dhl.com/us-en/home/get-a-quote/one-time-shipment-quote.html"
+    url = "https://www.dhl.com/jp-en/home/get-a-quote.html"
     driver.get(url)
     sleep(1.5)
-#         wait_to_pop(driver, '//*[@id="onetrust-accept-btn-handler"]')
+    
     accept_button_locator = (By.XPATH, '//*[@id="onetrust-accept-btn-handler"]')
     accept_cookies(driver, accept_button_locator)
-    sleep(1)
 
-    location_change_button = driver.find_element_by_xpath("/html/body/div[5]/main/div[4]/div/div[2]/div/form/div[2]/fieldset[1]/div[2]/div[1]/div/div/button")
-    location_change_button.click()
-    sleep(1)
-
-    location_element = driver.find_element_by_xpath('//*[@id="country-dropdown"]')
-    location_element.send_keys("Japan")
-    location_element.click()
-    location_choose = driver.find_element_by_id("undefined-auto-complete")
-    location_choose.click()
-    sleep(0.5)
-    location_confirm = driver.find_element_by_name("change-country-cta")
-
-    #country-dropdown
-    location_confirm.click()
-
-    sleep(1)
+    # sleep(1)
     wait_to_pop(driver, '//*[@id="originZip"]')
-    japan_postcode = driver.find_element_by_id('originZip')
-    japan_postcode.send_keys(jp_postal)
+    japan_postcode = driver.find_element("xpath", '//*[@id="originZip"]')
+    japan_postcode.send_keys(jp_zipcode)
 
-    dest = driver.find_element_by_xpath("/html/body/div[7]/main/div[4]/div/div[2]/div/form/div[2]/fieldset[2]/div[2]/div[1]/div/div/div/div[2]/input")
+    dest = driver.find_element("xpath", "/html/body/div[7]/main/div[4]/div/div[2]/div/form/div[2]/fieldset[2]/div[2]/div[1]/div/div/div/div[2]/input")
     dest.click()
     dest.send_keys("United States of America")
 
-    sleep(1)
-    dest_postcode = driver.find_element_by_id('destinationZip')
-    dest_postcode.send_keys(us_postal)
+    # sleep(1)
+    dest_postcode = driver.find_element(By.ID, 'destinationZip')
+    dest_postcode.send_keys(us_zipcode)
 
     wait_to_pop(driver, '//*[@id="tradelane-panel"]/form/div[3]/button')
-    next_page = driver.find_element_by_xpath('//*[@id="tradelane-panel"]/form/div[3]/button')
+    next_page = driver.find_element("xpath", '//*[@id="tradelane-panel"]/form/div[3]/button')
     next_page.click()
 
     click_on_empty_space(driver, 0, 0)
     sleep(1)
-    next_page = driver.find_element_by_xpath('//*[@id="tradelane-panel"]/form/div[3]/button')
+    next_page = driver.find_element("xpath", '//*[@id="tradelane-panel"]/form/div[3]/button')
     next_page.click()
 
 
     wait_to_pop(driver, '/html/body/div[7]/main/div[4]/div/form/div/div/div[1]/div[1]/div/div/div/input')
-    weight_enter = driver.find_element_by_xpath('/html/body/div[7]/main/div[4]/div/form/div/div/div[1]/div[1]/div/div/div/input')
+    weight_enter = driver.find_element("xpath",'/html/body/div[7]/main/div[4]/div/form/div/div/div[1]/div[1]/div/div/div/input')
+    cards = int(cards)
     if cards <= 2:
         weight_enter.send_keys("0.01")
     else:
@@ -277,18 +250,18 @@ def DHL(cards, jp_postal = "120-0011", us_postal = "90001"):
         weight_enter.send_keys(weight)
 
 
-    length_size = driver.find_element_by_xpath('//*[@id="length-0"]')
+    length_size = driver.find_element("xpath",'//*[@id="length-0"]')
     length_size.send_keys("15")
-    width_size = driver.find_element_by_xpath('//*[@id="width-0"]')
+    width_size = driver.find_element("xpath",'//*[@id="width-0"]')
     width_size.send_keys("10")
-    height_size = driver.find_element_by_xpath('//*[@id="height-0"]')
+    height_size = driver.find_element("xpath",'//*[@id="height-0"]')
     height_size.send_keys("5")
-    get_quote = driver.find_element_by_xpath('//*[@id="wcag-main-content"]/div[4]/div/form/div/div/div[4]/button')
+    get_quote = driver.find_element("xpath",'//*[@id="wcag-main-content"]/div[4]/div/form/div/div/div[4]/button')
     get_quote.click()
     sleep(2)
 
     info = {}
-    shipment_date = driver.find_element_by_xpath('//*[@id="date-picker"]').get_attribute("value")
+    shipment_date = driver.find_element("xpath",'//*[@id="date-picker"]').get_attribute("value")
     info['shipment_date'] = shipment_date
 
     delivery_date = find_element_text(driver, '//*[@id="EXP_INTERNATIONAL_PRE_12PM_NONDOC-headline"]/p')
@@ -304,10 +277,6 @@ def fedex(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
         action_chains = ActionChains(driver)
         action_chains.move_by_offset(x, y).click().perform()
 
-    def set_input_value(driver, input_locator, value):
-        input_element = driver.find_element(*input_locator)
-        driver.execute_script("arguments[0].setAttribute('value', arguments[1]);", input_element, value)
-
     def wait_to_pop(driver, location):
         input_locator = (By.XPATH, location)
         accept_button = WebDriverWait(driver, 3).until(EC.visibility_of_element_located(input_locator))
@@ -319,91 +288,91 @@ def fedex(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
     url = "https://www.fedex.com/en-us/home.html#"
     driver.get(url)
 
-    check_rate = driver.find_element_by_xpath('//*[@id="cubeOnePar"]/button')
+    check_rate = driver.find_element("xpath", '//*[@id="cubeOnePar"]/button')
     check_rate.click()
     wait_to_pop(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/div/div/div/magr-error/magr-locations-container/magr-error/fieldset/div[1]/div/magr-location/magr-autocomplete/magr-floating-label/div/div/span/input')
     sleep(1)
 
-    shipping_from = driver.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/div/div/div/magr-error/magr-locations-container/magr-error/fieldset/div[1]/div/magr-location/magr-autocomplete/magr-floating-label/div/div/span/input')
+    shipping_from = driver.find_element("xpath", '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/div/div/div/magr-error/magr-locations-container/magr-error/fieldset/div[1]/div/magr-location/magr-autocomplete/magr-floating-label/div/div/span/input')
     shipping_from.send_keys("Japan")
     sleep(1)
     click_on_empty_space(driver, 0, 0)
 
-    enter_own_add =  driver.find_element_by_xpath('//*[@id="fromLocationMessages"]/div/button') 
+    enter_own_add =  driver.find_element("xpath", '//*[@id="fromLocationMessages"]/div/button') 
     enter_own_add.click()
-    shipping_from = driver.find_element_by_xpath('//*[@id="null"]')
+    shipping_from = driver.find_element("xpath", '//*[@id="null"]')
     shipping_from.send_keys("Japan")
 
-    shipping_postal = driver.find_element_by_xpath('//*[@id="fromPostcode"]')
+    shipping_postal = driver.find_element("xpath", '//*[@id="fromPostcode"]')
     shipping_postal.click()
     #fake the detection from google
     shipping_postal.send_keys("1")
     sleep(1)
     click_on_empty_space(driver, 0, 0)
-    shipping_postal = driver.find_element_by_xpath('//*[@id="fromPostcode"]')
+    shipping_postal = driver.find_element("xpath", '//*[@id="fromPostcode"]')
     shipping_postal.send_keys(jp_zipcode)
 
-    shipping_to = driver.find_element_by_xpath('//*[@id="toGoogleAddress"]')
+    shipping_to = driver.find_element("xpath", '//*[@id="toGoogleAddress"]')
     shipping_to.send_keys("United States")
     sleep(1)
     click_on_empty_space(driver, 0, 0)
 
-    enter_own_add = driver.find_element_by_xpath('//*[@id="toLocationMessages"]/div/button')
+    enter_own_add = driver.find_element("xpath", '//*[@id="toLocationMessages"]/div/button')
     enter_own_add.click()
 
-    shippingto_postal = driver.find_element_by_xpath('//*[@id="toPostcode"]')
+    shippingto_postal = driver.find_element("xpath", '//*[@id="toPostcode"]')
     shippingto_postal.send_keys(us_zipcode)
     click_on_empty_space(driver, 0, 0)
     sleep(0.5)
-    shippingto_postal = driver.find_element_by_xpath('//*[@id="toPostcode"]')
+    shippingto_postal = driver.find_element("xpath", '//*[@id="toPostcode"]')
     shippingto_postal.click()
 
-    continue_button = driver.find_element_by_xpath('//*[@id="main-container"]/div/fdx-purple-engine/fdx-loading-indicator/div[2]/div/div/div/magr-error/magr-locations-container/magr-error/fieldset/magr-error/div/button')
+    continue_button = driver.find_element("xpath", '//*[@id="main-container"]/div/fdx-purple-engine/fdx-loading-indicator/div[2]/div/div/div/magr-error/magr-locations-container/magr-error/fieldset/magr-error/div/button')
     continue_button.click()
 
     wait_to_pop(driver, '//*[@id="package-details__weight-0"]')
-    weight = driver.find_element_by_xpath('//*[@id="package-details__weight-0"]')
+    weight = driver.find_element("xpath", '//*[@id="package-details__weight-0"]')
+    cards = int(cards)
     if cards <= 4:
         weight.send_keys("0.02")
     else:
         new_key = str(0.005 * cards)
         weight.send_keys(new_key)
-    length = driver.find_element_by_xpath('//*[@id="package-details__dimensions-0"]/input[1]')
+
+    length = driver.find_element("xpath", '//*[@id="package-details__dimensions-0"]/input[1]')
     length.send_keys("15")
-    width = driver.find_element_by_xpath('//*[@id="package-details__dimensions-0"]/input[2]')
+    width = driver.find_element("xpath", '//*[@id="package-details__dimensions-0"]/input[2]')
     width.send_keys("10")
-    height = driver.find_element_by_xpath('//*[@id="package-details__dimensions-0"]/input[3]')
+    height = driver.find_element("xpath", '//*[@id="package-details__dimensions-0"]/input[3]')
     height.send_keys("5")
 
-    rate_button = driver.find_element_by_xpath('//*[@id="e2ePackageDetailsSubmitButtonRates"]')
+    rate_button = driver.find_element("xpath", '//*[@id="e2ePackageDetailsSubmitButtonRates"]')
     rate_button.click()
 
     wait_to_pop(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/header/dl/dd')
     sleep(1)
     info = {}
-    shipment_date = driver.find_element_by_xpath('//*[@id="packageShipDate"]').text.strip().split("\n")[0]
+    shipment_date = driver.find_element("xpath", '//*[@id="packageShipDate"]').text.strip().split("\n")[0]
     info['shipment_date'] = shipment_date
 
-    arrive_and_price = {}
     arrive_date = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/header/dl/dd')
     time1 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[1]/div/dl/dd[1]')
     money1 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[1]/div/button[1]')
-    arrive_and_price[arrive_date + " "+ time1] = money1
+    info[arrive_date + " "+ time1] = money1
 
     time2 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[2]/div/dl/dd[1]')
     money2 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[2]/div/button[1]')
-    arrive_and_price[arrive_date + " "+ time2] = money2
+    info[arrive_date + " "+ time2] = money2
 
     time3 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[3]/div/dl/dd[1]')
     money3 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[3]/div/button[1]')
-    arrive_and_price[arrive_date + " "+ time3] = money3
+    info[arrive_date + " "+ time3] = money3
 
     arrive_date2 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[2]/magr-rate/section/div/header/dl/dd')
     time4 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[2]/magr-rate/section/div/header/dl/dd')
     money4 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[2]/magr-rate/section/div/ul/li/div/button[1]')
-    arrive_and_price[arrive_date2 + " "+ time4] = money4
+    info[arrive_date2 + " "+ time4] = money4
 
-    info['arrive_and_price'] = arrive_and_price
     driver.quit()
     return info
 
