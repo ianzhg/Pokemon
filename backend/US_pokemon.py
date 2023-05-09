@@ -80,8 +80,11 @@ def fetch_all_us_card_info():
 # This will only be to be ran once
 def update_card_in_english():
   
+    # Create a client and connect to your MongoDB instance
     client = MongoClient('mongodb+srv://admin:admin@cluster0.wj4vxhv.mongodb.net/?retryWrites=true&w=majority')
     db = client['pokemon_cards']
+
+    # Get your collections
     collection1 = db['cards']
     collection2 = db['us_cards']
 
@@ -102,8 +105,13 @@ def update_card_in_english():
                 # Get the last part of the product_title
                 part3 = parts[-1]
 
-                # Update the document in the first collection with the new US_name
-                collection1.update_one({'_id': doc1['_id']}, {'$set': {'US_name': part3}})
+                # Get the image URL from the document in the second collection
+                image_url = doc2['Image URL']
+
+                # Update the document in the first collection with the new US_name and Image URL
+                collection1.update_one({'_id': doc1['_id']}, {'$set': {'US_name': part3, 'Image URL': image_url}})
+
+
 
 # This is the active scripts that updates prices in USD, run this function whenever we needs to update card prices in USD
 def update_us_price():

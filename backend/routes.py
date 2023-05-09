@@ -180,3 +180,14 @@ def get_exchange_rate_route():
         response.status_code = 500
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
+
+@api.route("/all_us_prices", methods=["GET"])
+def valid_us_prices():
+    # Query the MongoDB collection for instances where US_Price is not "N/A" or -1
+    cards = collection.find({"US_price": {"$nin": ["N/A", -1]}})
+
+    # Convert the query result to a list of dictionaries
+    card_list = [card for card in cards]
+
+    # Return the instances as JSON
+    return jsonify(card_list)
