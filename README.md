@@ -1,16 +1,12 @@
 
 <a name="readme-top"></a>
 
-
-
-
-
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+<!-- [![LinkedIn][linkedin-shield]][linkedin-url] -->
 
 
 
@@ -18,7 +14,7 @@
 # Welcome to the Pokemoon Repository !
 <br />
 <div align="center">
-  <!-- <a href="https://github.com/jhu-oose-f22/team-doit-project-repo"> -->
+  <a href="https://github.com/ianzhg/Pokemon">
     <img src="doitimage.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -27,14 +23,14 @@
   <p align="center">
     An awesome application to find the better you!
     <br />
-    <a href="https://github.com/jhu-oose-f22/team-doit-project-repo"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/ianzhg/Pokemon"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://doit-oose.herokuapp.com/">View Demo</a>
+    <!-- <a href="https://doit-oose.herokuapp.com/">View Demo</a> -->
     ·
-    <a href="https://github.com/jhu-oose-f22/team-doit-project-repo/issues">Report Bug</a>
+    <a href="https://github.com/ianzhg/Pokemon/issues">Report Bug</a>
     ·
-    <a href="https://github.com/jhu-oose-f22/team-doit-project-repo/issues">Request Feature</a>
+    <a href="https://github.com/ianzhg/Pokemon/issues">Request Feature</a>
   </p>
 </div>
 
@@ -75,7 +71,12 @@
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
-The purpose of the pokemon application is to keep track of the pokemon card price difference between Japan market and US market. 
+This repository contains a Pokemon application designed to track and compare the price differences between the Japan and US markets for Pokemon cards. This tool is especially useful for collectors and resellers looking to take advantage of price discrepancies across markets.
+
+ - Track and compare Pokemon card prices between the Japan and US markets.
+ - Identify profitable opportunities for buying and selling cards across markets.
+ - Fetch real-time card prices from trusted sources.
+ - Keep track of price trends and fluctuations over time.
 
 <!-- Here's why:
 * People often feel unmotivated and discouraged to do academic, professional, and personal tasks. :sob:
@@ -98,14 +99,17 @@ The existence of free coins allows users to complete tasks under the supervision
 
 Here are major frameworks/libraries we used to build our project.
 * [![React][React.js]][React-url]
-<!-- * [![Node.js][Node.js.com]][Node.js-url]
-* [![Express][Express.com]][Express-url]
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 * [![MongoDB][MongoDB.com]][MongoDB-url]
 * [![MaterialUI][mui.com]][mui-url]
-* [![Axios][axios-http.com]][axios-http-url]
+* ![Selenium](https://img.shields.io/badge/-selenium-%43B02A?style=for-the-badge&logo=selenium&logoColor=white)
+* ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+* ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
+<!-- * [![Axios][axios-http.com]][axios-http-url]
 * [![getstream][getstream-http.com]][getstream-http-url]
-* [![heroku][heroku-http.com]][heroku-http-url] -->
+* [![heroku][heroku-http.com]][heroku-http-url]
+* [![Node.js][Node.js.com]][Node.js-url]
+* [![Express][Express.com]][Express-url] -->
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -119,7 +123,15 @@ Here are major frameworks/libraries we used to build our project.
 
 ### Installation
 
-1. Navigate to the ```backend``` folder and run ```pip install -r requirements.txt``` to install all dependencies. 
+1. Navigate to the ```backend``` folder 
+    ```sh
+    cd backend
+    ```
+    Then 
+    ```sh
+    pip install -r requirements.txt
+    ```
+    to install all dependencies
 
 2. Next run the following code to set up the virtual environment for backend
 
@@ -136,17 +148,32 @@ Here are major frameworks/libraries we used to build our project.
         ```sh
         python app.py
         ```
-3. Navigate to the ```frontend``` folder and run ```npm i --force``` to install all dependencies. 
+3. Navigate to the ```frontend``` folder 
+    ```sh
+    cd frontend
+    ```
+    Then run
+    ```sh
+    npm i --force
+    ```
+    to install all dependencies. 
    
 4. Run the following code to start the frontend
-  ```sh
-  npm run start
-  ```
+    ```sh
+    npm run start
+    ```
 5. You should be directed to ```http://localhost:3000/```
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+![Shipping Page](https://imgur.com/a/B94v8Mb)
+- This page allows users to compare shipping prices from three different shipping companies: Japan Post, DHL, and FedEx. By entering the required information, such as the number of cards, US zip code, and Japan zip code, users can easily view shipping prices and options from each company. Please note that due to the use of Selenium scripts, fetching the results may take approximately 15-30 seconds per shipping company.
+
+![Currency Page](https://imgur.com/a/vBI7vlm)
+- This page allows users to easily convert currencies between USD and JPY. You can always click on the money icon to access the currency conversion tool via a pop-up window.
+
+
 
 
 <!-- CONTRIBUTING -->
@@ -213,13 +240,13 @@ We are thankful for these resources which have helped us on our development jour
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/jhu-oose-f22/team-doit-project-repo/graphs/contributors
+[contributors-url]: https://github.com/ianzhg/Pokemon/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/jhu-oose-f22/team-doit-project-repo/network/members
+[forks-url]: https://github.com/ianzhg/Pokemon/network/members
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/jhu-oose-f22/team-doit-project-repo/stargazers
+[stars-url]: https://github.com/ianzhg/Pokemon/stargazers
 [issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/jhu-oose-f22/team-doit-project-repo/issues
+[issues-url]: https://github.com/ianzhg/Pokemon/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
@@ -253,5 +280,6 @@ We are thankful for these resources which have helped us on our development jour
 [getstream-http-url]: https://getstream.io/
 [heroku-http.com]: https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white
 [heroku-http-url]: https://www.heroku.com/
+
 
 
