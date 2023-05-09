@@ -15,7 +15,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/ianzhg/Pokemon">
-    <img src="doitimage.png" alt="Logo" width="80" height="80">
+    <img src="pokemoon.jpeg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Pokemon-README</h3>
@@ -167,10 +167,10 @@ Here are major frameworks/libraries we used to build our project.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-![Shipping Page](https://imgur.com/a/B94v8Mb)
+![Shipping Page](https://i.imgur.com/tjku0c8.png)
 - This page allows users to compare shipping prices from three different shipping companies: Japan Post, DHL, and FedEx. By entering the required information, such as the number of cards, US zip code, and Japan zip code, users can easily view shipping prices and options from each company. Please note that due to the use of Selenium scripts, fetching the results may take approximately 15-30 seconds per shipping company.
 
-![Currency Page](https://imgur.com/a/vBI7vlm)
+![Currency Page](https://i.imgur.com/xvWqyMR.png)
 - This page allows users to easily convert currencies between USD and JPY. You can always click on the money icon to access the currency conversion tool via a pop-up window.
 
 
