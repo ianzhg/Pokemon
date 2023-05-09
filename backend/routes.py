@@ -1,6 +1,5 @@
 from flask import request, jsonify, Blueprint, Flask
 from US_pokemon import update_us_price, update_some_us_price
-
 from bs4 import BeautifulSoup
 import requests
 from selenium import webdriver
@@ -14,7 +13,9 @@ from pymongo import MongoClient
 import re
 from db import collection
 from shipping import function_runner
+from shipping import DHL
 from shipping import japan_post
+from shipping import fedex
 from exchangerate import get_exchange_rate
 
 # app = Flask(__name__)
@@ -150,17 +151,34 @@ def most_volatile_cards_endpoint():
     # Return the card data as JSON
     return jsonify(card_data)
 
-@api.route('/shipping', methods=['POST'])
-def get_shipping_price():
+@api.route('/shipping_japan_post', methods=['POST'])
+def get_japanpost_shipping_price():
     data = request.json
     cards = data['cards']
     jp_zipcode = data['japanZip']
     us_zipcode = data['usZip']
-    print(data)
     result = function_runner(japan_post, cards, jp_zipcode, us_zipcode)
     response = jsonify(result)
-    # response.headers.add('Access-Control-Allow-Origin', '*')
-    # response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
+
+@api.route('/shipping_DHL', methods=['POST'])
+def get_DHL_shipping_price():
+    data = request.json
+    cards = data['cards']
+    jp_zipcode = data['japanZip']
+    us_zipcode = data['usZip']
+    result = function_runner(DHL, cards, jp_zipcode, us_zipcode)
+    response = jsonify(result)
+    return response
+
+@api.route('/shipping_Fedex', methods=['POST'])
+def get_Fedex_shipping_price():
+    data = request.json
+    cards = data['cards']
+    jp_zipcode = data['japanZip']
+    us_zipcode = data['usZip']
+    result = function_runner(fedex, cards, jp_zipcode, us_zipcode)
+    response = jsonify(result)
     return response
 
 @api.route('/get_exchange_rate', methods=['POST'])
