@@ -52,6 +52,8 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li><a href="#Achievements">Achievements</a></li>
+    <li><a href="#Limitations and Possible Improvements">Limitations</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -170,22 +172,24 @@ Here are major frameworks/libraries we used to build our project.
 
 - Our code is a scalable and efficient solution for collecting and monitoring pricing and card information for Pokemon cards from multiple pages of Japanese and US trading websites. We utilize Beautiful Soup and regular expressions to accurately extract relevant information, ensuring consistent and reliable data. The structure of our code is clear and we can easily scale it to more regions, languages, and currencies.
 
-- Our code allows users to compare shipping prices from three different shipping companies: Japan Post, DHL, and FedEx. By entering the required information, such as the number of cards, US zip code, and Japan zip code, users can easily view shipping prices and options from each company. Please note that due to the use of Selenium scripts, fetching the results may take approximately 15-30 seconds per shipping company. Link
+- Our code allows users to compare shipping prices from three different shipping companies: Japan Post, DHL, and FedEx. By entering the required information, such as the number of cards, US zip code, and Japan zip code, users can easily view shipping prices and options from each company. Please note that due to the use of Selenium scripts, fetching the results may take approximately 15-30 seconds per shipping company. [Link](https://github.com/ianzhg/Pokemon/blob/master/backend/shipping.py)
 
-- Our code allows users to easily convert currencies between USD and JPY. You can always click on the money icon to access the currency conversion tool via a pop-up window. Link
+- Our code allows users to easily convert currencies between USD and JPY. You can always click on the money icon to access the currency conversion tool via a pop-up window. [Link](https://github.com/ianzhg/Pokemon/blob/master/backend/exchangerate.py)
 
-- Our code effectively extracts US card names and prices for Pokémon cards using BeautifulSoup and Selenium. This is a significant achievement, considering the complexities involved in dealing with different languages, text formats, and website structures. By using both Selenium and Beautiful Soup, we have ensured a robust and flexible approach to data extraction that can handle various challenges and adapt to future changes in website structures. Link Link
+- Our code effectively extracts US card names and prices for Pokémon cards using BeautifulSoup and Selenium. This is a significant achievement, considering the complexities involved in dealing with different languages, text formats, and website structures. By using both Selenium and Beautiful Soup, we have ensured a robust and flexible approach to data extraction that can handle various challenges and adapt to future changes in website structures. [Link](https://github.com/ianzhg/Pokemon/blob/master/backend/US_pokemon.py) [Link](https://github.com/ianzhg/Pokemon/blob/master/backend/JP_pokemon_search.py)
 
-- We successfully identified 1,000 cards with valid US prices out of 5,000 cards with JP names and JP prices. This high extraction rate speaks to the quality and effectiveness of our code, especially given the challenges of dealing with differences in text, languages, and cultures between the two countries. Link  Link
+- We successfully identified 1,000 cards with valid US prices out of 5,000 cards with JP names and JP prices. This high extraction rate speaks to the quality and effectiveness of our code, especially given the challenges of dealing with differences in text, languages, and cultures between the two countries. [Link](https://github.com/ianzhg/Pokemon/blob/master/backend/US_pokemon.py) [Link](https://github.com/ianzhg/Pokemon/blob/master/backend/JP_pokemon_search.py)
 
-- Despite time constraints, we have developed a fully functional frontend interface that is both user-friendly and visually reasonable. By leveraging multiple libraries and technologies, we have created a decent experience for users to navigate with our websites and learn the price differences between JP and US cards. Link
+- Despite time constraints, we have developed a fully functional frontend interface that is both user-friendly and visually reasonable. By leveraging multiple libraries and technologies, we have created a decent experience for users to navigate with our websites and learn the price differences between JP and US cards. [Link](https://github.com/ianzhg/Pokemon/blob/master/frontend)
 
-- We have incorporated a cart feature that allows users to compare the total price of their selected cards in both US dollars and Japanese yen. This feature allows users to make informed decisions about their purchases by offering a clear and straightforward way to assess potential cost savings or earnings. Link
+- We have incorporated a cart feature that allows users to compare the total price of their selected cards in both US dollars and Japanese yen. This feature allows users to make informed decisions about their purchases by offering a clear and straightforward way to assess potential cost savings or earnings. [Link](https://github.com/ianzhg/Pokemon/blob/master/frontend)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 # Limitations and Possible Improvements
 - When scraping Japanese and US card prices, the solution is customized to the particular card trading websites. To extract data from more websites, we will need to build customizable scarping solutions for those websites as well and the marginal return is low. However, since most of the trading websites follow a similar structure in presenting information (name, id, and price), a possible improvement is to use machine learning techniques and automatically find the prices instead of customizing our code for each website. The complexity of the solution might be high since we need to make a universal solution for different websites but we could greatly increase the reliability of the prices since it comes from more sources.
 
-- When attempting to obtain shipping prices from FedEx, USPS, UPS, and DHL, we encountered difficulties using their APIs directly. To access the APIs for FedEx, USPS, and DHL, a business API key is required, which necessitates having an actual company and applying for it. As for UPS, their API only permits quoting shipping prices from the US to Japan, rather than from Japan to the US. Consequently, we decided to utilize Selenium scripts to perform GUI interactions directly on the respective websites.
+- When attempting to obtain shipping prices from FedEx, USPS, UPS, and DHL, we encountered difficulties using their APIs directly. To access the APIs for FedEx, USPS, and DHL, a business API key is required, which necessitates having an actual company and applying for it. As for UPS, their API only permits quoting shipping prices from the US to Japan, rather than from Japan to the US. Consequently, we decided to utilize Selenium scripts to perform GUI interactions directly on the respective websites. [Link](https://github.com/ianzhg/Pokemon/blob/master/backend/attemped_shipping_api.py)
   - This approach results in longer delays, taking approximately 15-30 seconds per shipping company.
   - The Selenium script may occasionally time out, requiring users to rerun the function on the webpage.
   - When running Selenium, a pop-up window appears. Although I attempted to use "headless" mode to mitigate this issue, it increased the likelihood of encountering bugs.
@@ -198,16 +202,26 @@ Here are major frameworks/libraries we used to build our project.
 
 - Our project relies on the accuracy and availability of data from third-party websites, which may change their structure, policies, or availability at any time. This dependency presents a risk to the stability of our platform, and we will need to continually monitor and adapt to changes in these sources to maintain the accuracy and reliability of our data.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-![Shipping Page](https://i.imgur.com/tjku0c8.png)
-- This page allows users to compare shipping prices from three different shipping companies: Japan Post, DHL, and FedEx. By entering the required information, such as the number of cards, US zip code, and Japan zip code, users can easily view shipping prices and options from each company. Please note that due to the use of Selenium scripts, fetching the results may take approximately 15-30 seconds per shipping company.
+- Home page
+  - ![Home Page](https://i.imgur.com/POF9FFu.png)
+- Search page
+  - ![Search Page](https://i.imgur.com/IXkyVBq.png)
+- Shopping cart 
+  - ![Cart Page](https://i.imgur.com/3MARBPG.png)
+- Volatile card
+  - ![Volatile card](https://i.imgur.com/2SrYkxN.png)
+- Currency page
+  - ![Currency page](https://i.imgur.com/COobf8p.png)
+- Shipping page
+  - ![Shipping page1](https://i.imgur.com/xJlaTqO.png)
+  - ![Shipping page2](https://i.imgur.com/CHK2wzz.png)
 
-![Currency Page](https://i.imgur.com/xvWqyMR.png)
-- This page allows users to easily convert currencies between USD and JPY. You can always click on the money icon to access the currency conversion tool via a pop-up window.
-
-
+  <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- CONTRIBUTING -->
