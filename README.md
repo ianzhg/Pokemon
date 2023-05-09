@@ -52,6 +52,8 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li><a href="#Achievements">Achievements</a></li>
+    <li><a href="#Limitations and Possible Improvements">Limitations</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -201,11 +203,20 @@ Here are major frameworks/libraries we used to build our project.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-![Shipping Page](https://i.imgur.com/tjku0c8.png)
-- This page allows users to compare shipping prices from three different shipping companies: Japan Post, DHL, and FedEx. By entering the required information, such as the number of cards, US zip code, and Japan zip code, users can easily view shipping prices and options from each company. Please note that due to the use of Selenium scripts, fetching the results may take approximately 15-30 seconds per shipping company.
+- Home page
+  - ![Home Page](https://i.imgur.com/POF9FFu.png)
+- Search page
+  - ![Search Page](https://i.imgur.com/IXkyVBq.png)
+- Shopping cart 
+  - ![Cart Page](https://i.imgur.com/3MARBPG.png)
+- Volatile card
+  - ![Volatile card](https://i.imgur.com/2SrYkxN.png)
+- Currency page
+  - ![Currency page](https://i.imgur.com/COobf8p.png)
+- Shipping page
+  - ![Shipping page1](https://i.imgur.com/xJlaTqO.png)
+  - ![Shipping page2](https://i.imgur.com/CHK2wzz.png)
 
-![Currency Page](https://i.imgur.com/xvWqyMR.png)
-- This page allows users to easily convert currencies between USD and JPY. You can always click on the money icon to access the currency conversion tool via a pop-up window.
 
 
 
