@@ -1,12 +1,22 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import MainPage from './components/MainPage';
 import SearchPage from './components/SearchPage';
 import AllProductsPage from './components/AllProductsPage';
 import ShippingPage from './components/ShippingPage';
 import ExchangeRatePage from './components/ExchangeRate';
+import IconButton from '@mui/material/IconButton';
+import PaidIcon from '@mui/icons-material/Paid';
+import Drawer from '@mui/material/Drawer';
 
 function App() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
+
+
   return (
     <Router>
       <div>
@@ -27,8 +37,19 @@ function App() {
             <li>
               <Link to="/get_exchange_rate">Currency Exchange</Link>
             </li>
+            <IconButton onClick={toggleDrawer}>
+            <PaidIcon fontSize="large" />
+          </IconButton>
           </ul>
         </nav>
+
+        <Drawer
+          anchor="right"
+          open={drawerOpen}
+          onClose={toggleDrawer}
+        >
+          <ExchangeRatePage />
+        </Drawer>
 
         <Routes>
           <Route path="/" element={<MainPage />} />
