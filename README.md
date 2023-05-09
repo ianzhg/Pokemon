@@ -184,6 +184,8 @@ Here are major frameworks/libraries we used to build our project.
 
 - We have incorporated a cart feature that allows users to compare the total price of their selected cards in both US dollars and Japanese yen. This feature allows users to make informed decisions about their purchases by offering a clear and straightforward way to assess potential cost savings or earnings. [Link](https://github.com/ianzhg/Pokemon/blob/master/frontend)
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 # Limitations and Possible Improvements
 - When scraping Japanese and US card prices, the solution is customized to the particular card trading websites. To extract data from more websites, we will need to build customizable scarping solutions for those websites as well and the marginal return is low. However, since most of the trading websites follow a similar structure in presenting information (name, id, and price), a possible improvement is to use machine learning techniques and automatically find the prices instead of customizing our code for each website. The complexity of the solution might be high since we need to make a universal solution for different websites but we could greatly increase the reliability of the prices since it comes from more sources.
 
@@ -199,6 +201,8 @@ Here are major frameworks/libraries we used to build our project.
 - Our current implementation relies on Beautiful Soup to scrape card information, which requires making an HTTP request for each card individually. This approach can be slow and resource-intensive, especially when dealing with a large number of cards. We are exploring alternative methods for data collection that can improve the efficiency of our scraping process without compromising the quality of our data.
 
 - Our project relies on the accuracy and availability of data from third-party websites, which may change their structure, policies, or availability at any time. This dependency presents a risk to the stability of our platform, and we will need to continually monitor and adapt to changes in these sources to maintain the accuracy and reliability of our data.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- USAGE EXAMPLES -->
@@ -217,8 +221,7 @@ Here are major frameworks/libraries we used to build our project.
   - ![Shipping page1](https://i.imgur.com/xJlaTqO.png)
   - ![Shipping page2](https://i.imgur.com/CHK2wzz.png)
 
-
-
+  <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- CONTRIBUTING -->
