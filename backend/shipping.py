@@ -175,19 +175,20 @@ def japan_post(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
     
     method1 = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[3]/div[1]/span")
     method1_cost = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[3]/div[2]/div[1]/div[2]/table/tbody/tr/td[1]/span")
-    method1_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[3]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul")
+    method1_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[3]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul").split("\n")[0]
 
     method2 = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[4]/div[1]/span")
     method2_cost = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[4]/div[2]/div[1]/div[2]/table/tbody/tr/td[1]/span")
-    method2_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[4]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul")
+    method2_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[4]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul").split("\n")[0]
 
     method3 = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[1]/span")
     method3_cost = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[2]/div[1]/div[2]/table/tbody/tr/td[1]/span")
-    method3_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul")
+    method3_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul").split("\n")[0]
 
-    info[method1] = (method1_cost + method1_time).replace("\n", "").replace("days", "days  ").replace("weeks", "weeks  ")
-    info[method2] = (method2_cost + method2_time).replace("\n", "").replace("days", "days  ").replace("weeks", "weeks  ")
-    info[method3] = (method3_cost + method3_time).replace("\n", "").replace("days", "days  ").replace("weeks", "weeks  ")
+
+    info[method1] = (method1_cost + method1_time).replace("\n", "")
+    info[method2] = (method2_cost + method2_time).replace("\n", "")
+    info[method3] = (method3_cost + method3_time).replace("\n", "")
     driver.quit()
     return info
 
