@@ -1,7 +1,13 @@
 import React from 'react';
-import { Card, CardContent, Typography, CardMedia } from '@mui/material';
+import { Card, CardContent, Typography, CardMedia, Button } from '@mui/material';
 
 const USCardItem = ({ card }) => {
+  const addToCart = () => {
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    cart.push(card);
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+  };
+
   return (
     <Card>
       <CardMedia
@@ -27,9 +33,13 @@ const USCardItem = ({ card }) => {
         <Typography variant="body2" color="text.primary">
           Card ID: {card._id}
         </Typography>
+        <Button variant="contained" color="primary" onClick={addToCart}>
+          Add to Cart
+        </Button>
       </CardContent>
     </Card>
   );
 };
 
 export default USCardItem;
+

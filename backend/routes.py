@@ -17,6 +17,7 @@ from shipping import DHL
 from shipping import japan_post
 from shipping import fedex
 from exchangerate import get_exchange_rate
+from bson.json_util import dumps
 
 # app = Flask(__name__)
 # CORS(app, resources={r"*": {"origins": "*"}})
@@ -209,3 +210,18 @@ def valid_us_prices():
 
     # Return the instances as JSON
     return jsonify(card_list)
+
+@api.route("/search", methods=["GET"])
+def search():
+    searchTerm = request.args.get("term")
+
+    if not searchTerm:
+        return jsonify([])
+
+    results = collection.find(
+        {"$text": {"$search": searchTerm}, "US_price": {"$ne": "N/A", "$ne": -1}},
+        {"score": {"$meta": "textScore"}}
+    ).sort([("score", {"$meta": "textScore"})])
+
+    return dumps(results)
+

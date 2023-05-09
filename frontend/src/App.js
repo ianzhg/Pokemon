@@ -24,9 +24,9 @@ function App() {
         <Navbar /> {/* replace the raw nav element with the Navbar component */}
         
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          <Route path="/" element={<AllProductsPage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/all-products" element={<AllProductsPage />} />
+          <Route path="/volatile_card" element={<MainPage />} />
           <Route path="/shipping" element={<ShippingPage />} />
           <Route path="/get_exchange_rate" element={<ExchangeRatePage />} />
         </Routes>
