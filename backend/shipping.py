@@ -326,7 +326,7 @@ def fedex(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
     sleep(0.5)
     shippingto_postal = driver.find_element("xpath", '//*[@id="toPostcode"]')
     shippingto_postal.click()
-
+    sleep(1)
     continue_button = driver.find_element("xpath", '//*[@id="main-container"]/div/fdx-purple-engine/fdx-loading-indicator/div[2]/div/div/div/magr-error/magr-locations-container/magr-error/fieldset/magr-error/div/button')
     continue_button.click()
 
