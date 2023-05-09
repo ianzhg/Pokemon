@@ -16,12 +16,15 @@ const ShippingPage = () => {
     const [cards, setCards] = useState('');
     const [usZip, setUsZip] = useState('');
     const [japanZip, setJapanZip] = useState('');
-    const [JapanPostresult, setJapanResult] = useState('');
-    const [DHLresult, setDHLResult] = useState('');
-    const [Fedexresult, setFedexResult] = useState('');
+
+    const [JapanPostresult, setJapanResult] = useState(JSON.parse(sessionStorage.getItem('japanPostResult')) || '');
+    const [DHLresult, setDHLResult] = useState(JSON.parse(sessionStorage.getItem('DHLResult')) || '');
+    const [Fedexresult, setFedexResult] = useState(JSON.parse(sessionStorage.getItem('FedexResult')) || '');
+
     const [jploadloading, setJapanPostLoading] = useState(false);
     const [dhlloading, setDHLoading] = useState(false);
     const [fedexloading, setFedexLoading] = useState(false);
+    
     const [cardsError, setCardsError] = useState(false);
     const [usZipError, setUsZipError] = useState(false);
     const [japanZipError, setJapanZipError] = useState(false);
@@ -51,6 +54,7 @@ const ShippingPage = () => {
         
           const data = await response.json();
           setJapanResult(data);
+          sessionStorage.setItem('japanPostResult', JSON.stringify(data));
       } catch (error){
         console.error("Error fetching data:",  error);
       }finally{
@@ -67,6 +71,7 @@ const ShippingPage = () => {
         
           const data = await response.json();
           setDHLResult(data);
+          sessionStorage.setItem('DHLResult', JSON.stringify(data));
       } catch (error){
         console.error("Error fetching data:",  error);
       }finally{
@@ -83,6 +88,7 @@ const ShippingPage = () => {
         
           const data = await response.json();
           setFedexResult(data);
+          sessionStorage.setItem('FedexResult', JSON.stringify(data));
       } catch (error){
         console.error("Error fetching data:",  error);
       }finally{

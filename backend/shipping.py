@@ -25,7 +25,7 @@ def function_runner(function, cards, jp_zipcode, us_zipcode, attempts = 2):
             return function(cards, jp_zipcode, us_zipcode)
         except Exception as err:
             pass
-    return {}
+    return {"error":"timeout, try another time"}
 
 def get_japan_prefecture(postal_code):
     base_url = "https://zipcloud.ibsnet.co.jp/api/search"
@@ -280,7 +280,7 @@ def fedex(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
 
     def wait_to_pop(driver, location):
         input_locator = (By.XPATH, location)
-        accept_button = WebDriverWait(driver, 3).until(EC.visibility_of_element_located(input_locator))
+        accept_button = WebDriverWait(driver, 10).until(EC.visibility_of_element_located(input_locator))
         accept_button.click()
     chrome_options = Options()
     #chrome_options.add_argument("--headless")
@@ -292,7 +292,6 @@ def fedex(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
     check_rate = driver.find_element("xpath", '//*[@id="cubeOnePar"]/button')
     check_rate.click()
     wait_to_pop(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/div/div/div/magr-error/magr-locations-container/magr-error/fieldset/div[1]/div/magr-location/magr-autocomplete/magr-floating-label/div/div/span/input')
-    sleep(1)
 
     shipping_from = driver.find_element("xpath", '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/div/div/div/magr-error/magr-locations-container/magr-error/fieldset/div[1]/div/magr-location/magr-autocomplete/magr-floating-label/div/div/span/input')
     shipping_from.send_keys("Japan")
