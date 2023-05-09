@@ -208,7 +208,7 @@ For example, if you want to use the local backend, change the URL to `http://loc
 <!-- CONTACT -->
 ## Contact
 
-### Team DoIt Project Members (listed in alphabetical order):
+### Pokemon Project Members (listed in alphabetical order):
 
 
 - Yujian (Ken) He - [@Kennnnn774](https://github.com/Kennnnn774) - yhe99@jhu.edu
