@@ -219,7 +219,13 @@ def search():
         return jsonify([])
 
     results = collection.find(
-        {"$text": {"$search": searchTerm}, "US_price": {"$ne": "N/A", "$ne": -1}},
+        {"$and": [
+            {"$text": {"$search": searchTerm}},
+            {"$or": [
+                {"US_price": {"$gt": -1}},
+                {"US_price": {"$ne": "N/A"}}
+            ]}
+        ]},
         {"score": {"$meta": "textScore"}}
     ).sort([("score", {"$meta": "textScore"})])
 

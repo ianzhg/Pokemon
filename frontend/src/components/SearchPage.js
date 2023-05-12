@@ -15,6 +15,7 @@ function SearchPage() {
       if (searchTerm) {
         const response = await axios.get(`http://localhost:5000/api/search?term=${searchTerm}`);
         setSearchResults(response.data);
+        console.log(response.data);
       } else {
         setSearchResults([]);
       }

@@ -8,6 +8,14 @@ const USCardItem = ({ card }) => {
     sessionStorage.setItem('cart', JSON.stringify(cart));
   };
 
+  // Fetch the rate from sessionStorage and parse it to float
+  const rate = parseFloat(sessionStorage.getItem('rate'));
+  
+  // Calculate JP_Price_USD, priceDifference and percentageDifference
+  const JP_Price_USD = card.JP_price * rate;
+  const priceDifference = card.US_price - JP_Price_USD;
+  const percentageDifference = (priceDifference / card.US_price) * 100;
+
   return (
     <Card>
       <CardMedia
@@ -22,15 +30,24 @@ const USCardItem = ({ card }) => {
           {card.US_name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          US Price: {card.US_price}
+          US Price: {card.US_price.toFixed(2)}$
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          JP Price: {card.JP_price}
+          JP Price: {card.JP_price.toFixed(2)}¥
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          JP Price (USD): {JP_Price_USD.toFixed(2)}$
+        </Typography>
+        <Typography variant="body2" color={priceDifference > 0 ? "error" : "text.secondary"}>
+          Price Difference: {priceDifference.toFixed(2)}$
+        </Typography>
+        <Typography variant="body2" color={priceDifference > 0 ? "error" : "text.secondary"}>
+          Difference in Percentage: {percentageDifference.toFixed(2)}%
         </Typography>
         <Typography variant="body2" color="text.secondary">
           JP Name: {card.JP_name}
         </Typography>
-        <Typography variant="body2" color="text.primary">
+        <Typography variant="body2" color="text.secondary">
           Card ID: {card._id}
         </Typography>
         <Button variant="contained" color="primary" onClick={addToCart}>
@@ -42,4 +59,5 @@ const USCardItem = ({ card }) => {
 };
 
 export default USCardItem;
+
 

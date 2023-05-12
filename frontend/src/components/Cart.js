@@ -13,6 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const rate = parseFloat(sessionStorage.getItem('rate')) || 0;
 
   useEffect(() => {
     const storedCart = JSON.parse(sessionStorage.getItem('cart')) || [];
@@ -31,10 +32,13 @@ const Cart = () => {
     0
   );
 
-  const totalJPPrice = cartItems.reduce(
-    (total, item) => total + parseFloat(item.JP_price),
+  const totalJPPriceUSD = cartItems.reduce(
+    (total, item) => total + parseFloat(item.JP_price) * rate,
     0
   );
+
+  const totalRawDifference = totalUSPrice - totalJPPriceUSD;
+  const totalPercentageDifference = (totalRawDifference / totalUSPrice) * 100;
 
   return (
     <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', minHeight: 300 }}>
@@ -58,7 +62,7 @@ const Cart = () => {
                 <ListItem>
                   <ListItemText
                     primary={item.US_name}
-                    secondary={`US Price: $${item.US_price}, JP Price: ¥${item.JP_price}`}
+                    secondary={`US Price: $${item.US_price}, JP Price: $${(item.JP_price * rate).toFixed(2)}`}
                   />
                   <ListItemSecondaryAction>
                     <IconButton
@@ -80,7 +84,13 @@ const Cart = () => {
               Total US Price: ${totalUSPrice.toFixed(2)}
             </Typography>
             <Typography variant="subtitle1" align="center">
-              Total JP Price: ¥{totalJPPrice.toFixed(2)}
+              Total JP Price in USD: ${totalJPPriceUSD.toFixed(2)}
+            </Typography>
+            <Typography variant="subtitle1" align="center" color="error">
+              Total Raw Difference: ${totalRawDifference.toFixed(2)}
+            </Typography>
+            <Typography variant="subtitle1" align="center" color="error">
+              Total Percentage Difference: {totalPercentageDifference.toFixed(2)}%
             </Typography>
           </Box>
         </>
@@ -90,3 +100,4 @@ const Cart = () => {
 };
 
 export default Cart;
+
