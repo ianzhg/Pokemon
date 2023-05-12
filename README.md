@@ -208,18 +208,18 @@ Here are major frameworks/libraries we used to build our project.
 <!-- USAGE EXAMPLES -->
 ## Usage
 - Home page
-  - ![Home Page](https://i.imgur.com/POF9FFu.png)
+  - ![Home Page](https://i.imgur.com/3hPGw4R.png)
 - Search page
-  - ![Search Page](https://i.imgur.com/IXkyVBq.png)
+  - ![Search Page](https://i.imgur.com/qbKdVAH.png)
 - Shopping cart 
-  - ![Cart Page](https://i.imgur.com/3MARBPG.png)
+  - ![Cart Page](https://i.imgur.com/MR25MBo.png)
 - Volatile card
   - ![Volatile card](https://i.imgur.com/2SrYkxN.png)
 - Currency page
   - ![Currency page](https://i.imgur.com/COobf8p.png)
 - Shipping page
   - ![Shipping page1](https://i.imgur.com/xJlaTqO.png)
-  - ![Shipping page2](https://i.imgur.com/CHK2wzz.png)
+  - ![Shipping page2](https://i.imgur.com/ZlOx8VG.png)
 
   <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
