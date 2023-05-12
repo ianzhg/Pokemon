@@ -17,8 +17,10 @@ from selenium.common.exceptions import NoSuchElementException
 import logging
 import re
 import time
+from exchangerate import get_exchange_rate
 
 chrome_driver_path = ChromeDriverManager().install()
+
 def function_runner(function, cards, jp_zipcode, us_zipcode, attempts = 2):
     for _ in range(attempts):
         try:
@@ -121,6 +123,7 @@ def find_element_text(driver, xpath):
 
     
 def japan_post(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
+    rate = get_exchange_rate("USD", "JPY")
     chrome_driver_path = ChromeDriverManager().install()
     chrome_options = Options()
     #chrome_options.add_argument("--headless")
@@ -170,19 +173,30 @@ def japan_post(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
 
     info["shipping_info"] = shipping_info
     info["fastest_way"] = fastest_way.text.strip()
-    info["fastest_way_cost_and_time"] = fastest_info.text.strip()
+    price, time = fastest_info.text.strip().split("/")
+    us_price = "($"+str(round(int(re.sub('\D', '', price)) / rate, 2)) + ")"
+    info["fastest_way_cost_and_time"] = price + us_price +"/"+ time
     info["fatstest_link"] = fastest_link
     
     method1 = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[3]/div[1]/span")
     method1_cost = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[3]/div[2]/div[1]/div[2]/table/tbody/tr/td[1]/span")
+    if method1_cost:
+        us_price = "($"+str(round(int(re.sub('\D', '', method1_cost)) / rate, 2)) + ")"
+        method1_cost += us_price
     method1_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[3]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul").split("\n")[0]
 
     method2 = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[4]/div[1]/span")
     method2_cost = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[4]/div[2]/div[1]/div[2]/table/tbody/tr/td[1]/span")
+    if method2_cost:
+        us_price = "($"+str(round(int(re.sub('\D', '', method1_cost)) / rate, 2)) + ")"
+        method2_cost += us_price
     method2_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[4]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul").split("\n")[0]
 
     method3 = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[1]/span")
     method3_cost = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[2]/div[1]/div[2]/table/tbody/tr/td[1]/span")
+    if method3_cost:
+        us_price = "($"+str(round(int(re.sub('\D', '', method1_cost)) / rate, 2)) + ")"
+        method3_cost += us_price
     method3_time = find_element_text(driver, "/html/body/div/div[3]/div/div[1]/div/div[5]/div[2]/div[1]/div[2]/table/tbody/tr/td[2]/ul").split("\n")[0]
 
 
@@ -193,6 +207,7 @@ def japan_post(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
     return info
 
 def DHL(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
+    rate = get_exchange_rate("USD", "JPY")
     def accept_cookies(driver, accept_button_locator):
         wait = WebDriverWait(driver, 2)
         accept_button = wait.until(EC.element_to_be_clickable(accept_button_locator))
@@ -269,7 +284,8 @@ def DHL(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
     info['delivery_date'] = delivery_date
 
     price = find_element_text(driver, '//*[@id="EXP_INTERNATIONAL_PRE_12PM_NONDOC-price"]/p[2]')
-    info['price'] = price
+    us_price = "($"+str(round(int(re.sub('\D', '', price)) / rate, 2)) + ")"
+    info['price'] = price + us_price
     driver.quit()
     return info
 
@@ -282,6 +298,7 @@ def fedex(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
         input_locator = (By.XPATH, location)
         accept_button = WebDriverWait(driver, 10).until(EC.visibility_of_element_located(input_locator))
         accept_button.click()
+    rate = get_exchange_rate("USD", "JPY")
     chrome_options = Options()
     #chrome_options.add_argument("--headless")
     driver = webdriver.Chrome(executable_path = chrome_driver_path, options=chrome_options)
@@ -358,19 +375,31 @@ def fedex(cards, jp_zipcode = "120-0011", us_zipcode = "90001"):
     arrive_date = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/header/dl/dd')
     time1 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[1]/div/dl/dd[1]')
     money1 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[1]/div/button[1]')
+    if money1:
+        us_price = "($"+str(round(int(re.sub('\D', '', money1)) / rate, 2)) + ")"
+        money1 += us_price
     info[arrive_date + " "+ time1] = money1
 
     time2 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[2]/div/dl/dd[1]')
     money2 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[2]/div/button[1]')
+    if money2:
+        us_price = "($"+str(round(int(re.sub('\D', '', money2)) / rate, 2)) + ")"
+        money2 += us_price
     info[arrive_date + " "+ time2] = money2
 
     time3 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[3]/div/dl/dd[1]')
     money3 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[1]/magr-rate/section/div/ul/li[3]/div/button[1]')
+    if money3:
+        us_price = "($"+str(round(int(re.sub('\D', '', money3)) / rate, 2)) + ")"
+        money3 += us_price
     info[arrive_date + " "+ time3] = money3
 
     arrive_date2 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[2]/magr-rate/section/div/header/dl/dd')
     time4 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[2]/magr-rate/section/div/header/dl/dd')
     money4 = find_element_text(driver, '/html/body/div[1]/div[2]/div/div/div/div[1]/div/div[3]/div/div/div/div/magr-root/div/div/fdx-purple-engine/fdx-loading-indicator/div[2]/magr-rate-container/div/div/div/div/magr-rate-list/ul/li[2]/magr-rate/section/div/ul/li/div/button[1]')
+    if money4:
+        us_price = "($"+str(round(int(re.sub('\D', '', money4)) / rate, 2)) + ")"
+        money4 += us_price
     info[arrive_date2 + " "+ time4] = money4
 
     driver.quit()
